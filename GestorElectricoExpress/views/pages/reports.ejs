@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <%- include('../partials/head'); %>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+        <title>Informes</title>
+</head>
+
+<body class="container">
+
+    <header>
+        <%- include('../partials/header', {active:'informes'}); %>
+    </header>
+
+    <main>
+
+        <div class="dropdown-divider"></div>
+        
+        <!-- Price chart -->
+        <%- include('../partials/charts/dayPricesChart', {sensores: sensores, precios: precios}); %>
+        
+        <div class="dropdown-divider"></div>
+        
+        <!-- Day consumption chart -->
+        <%- include('../partials/charts/dayConsumptionChart', {sensores: sensores}); %>
+
+        <div class="dropdown-divider"></div>
+
+        <!-- Total consumption chart -->
+        <%- include('../partials/charts/totalConsumptionChart', {sensores: sensores}); %>
+
+        <div class="dropdown-divider"></div>
+
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+
+    <script>
+        window.onload = function () {
+            var preciosCtx = document.getElementById("dayPrices").getContext("2d");
+            new Chart(preciosCtx, priceConfig);
+
+            var dayCtx = document.getElementById("dayConsumption").getContext("2d");
+            new Chart(dayCtx, dayConfig);
+
+            var totalCtx = document.getElementById("totalConsumptions").getContext("2d");
+            new Chart(totalCtx, totalConfig);
+        };
+    </script>
+</body>
+
+</html>

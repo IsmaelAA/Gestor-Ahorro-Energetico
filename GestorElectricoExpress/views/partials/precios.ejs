@@ -1,0 +1,46 @@
+<div class="container">
+    <% 
+        let currentDate = new Date().toLocaleString().split(' ')[0];
+    %>
+        
+    <div class="row">
+        <div class="col px-0 align-self-center" align="center">
+            Hora más cara
+        </div>
+        <div class="col px-0 align-self-center" align="center">
+            Hora actual
+        </div>
+        <div class="col px-0 align-self-center" align="center">
+            Hora más barata
+        </div>
+        <div class="w-100"></div>
+        <div class="col px-0 align-self-center" align="center">
+            <span class="alert-danger">
+                <% if(precios[precios.length-1].date == currentDate) {  %>
+                    <%= precios[precios.length-1].max.hour %>: <%= (precios[precios.length-1].max.price/1000).toFixed(4) %> €/kWh
+                <% }else { %>
+                    No se pudieron obtener los precios del día de hoy.
+                <% } %>
+            </span>
+        </div>
+        <div class="col  px-0 align-self-center" align="center">
+            <span class="alert-info">
+                <% if(precios[precios.length-1].date == currentDate) {  %>   
+                    <%  let currentHour = (new Date().getHours()).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + "-" + (new Date().getHours() + 1).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }); %>
+                    <%= currentHour %>: <%= (precios[precios.length-1].precios[`${currentHour}`].price/1000).toFixed(4) %> €/kWh
+                <% }else { %>
+                    No se pudieron obtener los precios del día de hoy.
+                <% } %>
+            </span>
+        </div>
+        <div class="col px-0 align-self-center" align="center">
+            <span class="alert-success">
+                <% if(precios[precios.length-1].date == currentDate) {  %>
+                    <%= precios[precios.length-1].min.hour %>: <%= (precios[precios.length-1].min.price/1000).toFixed(4) %> €/kWh
+                <% }else { %>
+                    No se pudieron obtener los precios del día de hoy.
+                <% } %>
+            </span>
+        </div>
+    </div>
+</div>

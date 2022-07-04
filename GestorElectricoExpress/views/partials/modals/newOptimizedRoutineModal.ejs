@@ -1,0 +1,27 @@
+<div class="modal fade" id="configureOptimizedRutine<%= sensor.device.replace(/[.]/g,'') %>" tabindex="-1" role="dialog" aria-labelledby="configureOptimizedRutineLabel<%= sensor.device.replace(/[.]/g,'') %>" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="/rutinas/optimizar" method="post" class="form-inline">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="configureOptimizedRutineLabel<%= sensor.device.replace(/[.]/g,'') %>">Configurar rutina optimizada</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <div class="modal-body">
+                    <p>La rutina optimizada escogerá automáticamente las franjas horarias más económicas del día para ello <b>indique el número de horas que desea tener el dispositivo encendido</b>.</p>
+                    <div class="dropdown-divider"></div>
+                    <label class="form-label" for="hoursActivated">Horas encendido: </label>  
+                    <input type="number" min="1" max="24" name="hoursActivated" required>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Aplicar rutina optimizada</button>
+                </div>
+                <input type="hidden" name="device" value="<%= sensor.device %>" />
+            </form> 
+        </div>
+    </div>
+</div>

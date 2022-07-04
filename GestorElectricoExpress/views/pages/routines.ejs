@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <%- include('../partials/head'); %>
+    <title>Rutinas</title>
+</head>
+
+<body class="container">
+
+    <header>
+        <%- include('../partials/header', {active:'rutinas'}); %>
+    </header>
+
+    <main>
+
+        <%- include('../partials/precios'); %>
+
+        <div class="accordion" id="accordionPanel">
+            <% sensores.forEach(function(sensor){ %>
+                <div class="accordion-item">
+                    
+                    <%- include('../partials/accordionheader', {sensor: sensor}); %>
+
+                    <div id="i<%= sensor.device.replace(/[.]/g,'') %>" class="accordion-collapse collapse show"
+                        aria-labelledby="panelsStayOpen-headingOne">
+                        <div class="accordion-body">                       
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="col-auto">
+                                        <%- include('../partials/buttons/turnOnRoutinesButton', {sensor: sensor}); %>
+                                    </div>
+                                </div>
+
+                                <div class="card-body">                           
+
+                                    <div class="row">
+                                        <h4>Rutinas configuradas</h4>
+                                    </div>
+
+                                    <div class="dropdown-divider"></div>
+                                    
+                                    <% if(sensor.routines.length == 0) { %>
+                                        <p>No existen rutinas configuradas para este dispositivo.</p>
+                                    <% }%>
+
+                                    <% sensor.routines.forEach(function(routine){ %>
+                                        <div class="row">
+                                            <% if(routine.isOptimized) { %>
+                                            <div class="col-auto">
+                                                <p class="alert-success" role="alert">
+                                                   Rutina optimizada
+                                                </p>                          
+                                            </div>
+                                            <% } %>
+
+                                            <div class="col-auto">
+                                                Hora de inicio
+                                                <input type="time" value="<%= routine.start %>" disabled>                                
+                                            </div>
+
+                                            <div class="col-auto">
+                                                Hora de fin                                  
+                                                <input type="time" value="<%= routine.end %>" disabled>  
+                                            </div>
+
+                                            <div class="col-auto">
+                                                <% if(routine.days == undefined){ %>
+                                                    <b>Activa todos los días</b>                         
+                                                <% } else { %>
+                                                    <% dias = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes"]; %>
+                                                    <% diasString = ""; %>
+                                                    <% routine.days.forEach(function(day){ diasString += dias[day]+ " " ; }) %>                               
+                                                    <p> Activa los días: <b> <%= diasString %> </b> </p>
+                                                <% } %>
+                                                
+                                            </div>
+                                            <div class="dropdown-divider"></div>                   
+                                        </div>
+                                    <% }) %>
+                                  
+                                </div>
+
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <div class="col-auto align-self-center">
+                                            <button class="btn  btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#configureOptimizedRutine<%= sensor.device.replace(/[.]/g,'') %>">Configurar rutina optimizada</button>
+                                        </div>
+
+                                        <div class="col-auto align-self-center">
+                                            <button class="btn  btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#newRoutine<%= sensor.device.replace(/[.]/g,'') %>">Añadir nueva rutina</button>
+                                        </div>
+                                        
+                                        <div class="col-auto align-self-center">
+                                            <%- include('../partials/buttons/resetDeviceRoutinesButton', {sensor: sensor}); %>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- newRoutine Modal -->
+                                <%- include('../partials/modals/newRoutineModal', {sensor: sensor}); %>
+
+                                 <!-- configureOptimizedRutine Modal -->
+                                <%- include('../partials/modals/newOptimizedRoutineModal', {sensor: sensor}); %>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Refrescar tabla cada 10 segundos -->
+                <script type="text/javascript" language="javascript">
+                    $(document).ready(function () {
+                        setInterval(function () {                        
+                            $('#dayConsumption<%= sensor.device.replace(/[.]/g,'') %>').load(location.href + ' #dayConsumption<%= sensor.device.replace(/[.]/g,'') %> >*', ''); //Actualizar consumo total del día
+                        }, 10000);
+                    });
+                </script>    
+
+                <% }); %>
+        </div>
+        
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+
+</body>
+
+</html>

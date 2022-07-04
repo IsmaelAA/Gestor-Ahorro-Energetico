@@ -1,0 +1,51 @@
+<div class="card">
+    <div class="card-header">
+        <h2> Consumo de los dispositivos <b>Total</b></h2>
+    </div>
+    <div class="card-body">
+        <div class="chart-container" style="width:100%;max-width:600px">
+            <canvas id="totalConsumptions"></canvas>
+        </div>
+    </div>
+</div>
+<script>
+    <%
+        let totalConsumptions = []
+        let totalTags = []
+        sensores.forEach(function (sensor) {
+            let totalConsumption = 0;
+            sensor.readings.forEach(function(reading){
+                totalConsumption += reading.dayConsumption;
+            });
+            totalConsumptions.push(totalConsumption);
+            totalTags.push(sensor.tag);
+        });                   
+    %>
+
+    var totalConfig = {
+        type: 'pie',
+        data: {
+            datasets: [{
+                data:  [<%- totalConsumptions %>],
+                backgroundColor: [  
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)'
+                ],
+                label: 'Consumo total de los dispositivos'
+            }],
+            labels: <%- JSON.stringify(totalTags) %>
+        },
+        options: {
+            responsive: true,
+            legend: {
+                display: true,
+                position: "right",
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            }
+        }
+    };
+</script>

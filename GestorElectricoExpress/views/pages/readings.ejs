@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <%- include('../partials/head'); %>
+        <title>Lecturas del sensor <%= sensor.device %>
+        </title>
+</head>
+
+<body class="container">
+
+    <header>
+        <%- include('../partials/header', {active:'sensores'}) %>
+    </header>
+
+    <main id="i<%= sensor.device.replace(/[.]/g,'') %>">
+        <div class="dropdown-divider"></div>  
+        <h4>Mostrando todas las lecturas del dispositivo <b><%= sensor.tag %> - <%= sensor.device %></b></h4>
+        <div class="dropdown-divider"></div>  
+       
+        <% if(sensor['readings'].length> 0 ){ %>
+            <% for(var i=sensor['readings'].length - 1 ;i>= 0 ;i--){ %>
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Lecturas del día <b><%= sensor['readings'][i].date %></b> </h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Consumo total del día <b> <%= (sensor['readings'][i].dayConsumption).toFixed(4) %> </b> kW/h</p>
+                        <p>Gasto total del día <b> <%= (sensor['readings'][i].dayCost).toFixed(4) %> </b> €</p>
+                        
+                        <div class="dropdown-divider"></div>  
+                        
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Consumo</th>
+                                    <th>Hora</th>
+                                </tr>
+                            </thead>
+                        
+                            <tbody>                                         
+                                <% for(var j=sensor['readings'][i].values.length - 1 ;j>= 0 ;j--){ %>
+                                    <tr>                                       
+                                        <td>
+                                            <%= sensor['readings'][i].values[j].value %> W
+                                        </td>
+
+                                        <td>
+                                            <%= sensor['readings'][i].values[j].hour %>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br></br> 
+            <% } %>
+        <% } %>
+
+        <div class= "row">
+            <%- include('../partials/buttons/resetDeviceReadingsButton', {sensor: sensor}); %>
+        </div>
+
+    </main>
+
+    <!-- Refrescar main cada 30 segundos por si entran nuevas lecturas -->
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            setInterval(function () {
+                $('#i<%= sensor.device.replace(/[.]/g,'') %>').load(location.href + ' #i<%= sensor.device.replace(/[.]/g,'') %> >*', ''); //Actualizar lecturas de los sensores
+            }, 30000);
+        });
+    </script>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+
+</body>
+
+</html>

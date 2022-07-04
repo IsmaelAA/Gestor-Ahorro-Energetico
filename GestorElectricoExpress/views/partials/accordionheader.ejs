@@ -1,0 +1,40 @@
+<div class="container-fluid">
+    <div class="row ">
+        <div class="col-12 px-0">
+            <span class="accordion-header accordion-button" id="panelsStayOpen-headingOne<%= sensor.device.replace(/[.]/g,'') %>" type="button" data-bs-toggle="collapse"
+            data-bs-target="#i<%= sensor.device.replace(/[.]/g,'') %>" aria-expanded="true"
+            aria-controls="panelsStayOpen-collapseOne">
+            <% 
+                var date = new Date().toLocaleString().split(' ')[0]
+            %>
+                <div class="row align-self-center">
+                    <div class="col-auto">
+                        <div class="row align-self-center">  
+                            <div class="col-auto align-self-center">     
+                                <span> 
+                                    <%= sensor.tag %> - <%= sensor.device %>
+                                </span>
+                            </div>
+
+                            <div class="col-auto align-self-center" id="dayConsumption<%= sensor.device.replace(/[.]/g,'') %>">
+                                <span>
+                                    Consumo Hoy: <% if (sensor['readings'].find(read=> read.date == date) == undefined) { %>
+                                        No se han registrado consumos                          
+                                        <% } else { %>
+                                            <span class="alert-dark">
+                                                <%= (sensor['readings'].find(read=> read.date == date).dayConsumption).toLocaleString(undefined,{'minimumFractionDigits':4,'maximumFractionDigits':4}) %>
+                                            </span> (kW/h) estimado en 
+                                            <span class="alert-dark"> 
+                                                <%= (sensor['readings'].find(read=> read.date == date).dayCost).toLocaleString(undefined,{'minimumFractionDigits':2,'maximumFractionDigits':2}) %> 
+                                            </span> €                   
+                                        <% } %> 
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </span>
+        </div>
+    </div>
+</div>
+

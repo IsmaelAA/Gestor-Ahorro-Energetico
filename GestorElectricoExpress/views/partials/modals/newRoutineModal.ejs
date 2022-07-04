@@ -1,0 +1,80 @@
+<div class="modal fade" id="newRoutine<%= sensor.device.replace(/[.]/g,'') %>" tabindex="-1" role="dialog" aria-labelledby="newRoutineLabel<%= sensor.device.replace(/[.]/g,'') %>" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">                                
+            <form action="/rutinas/nueva" method="post" class="form-inline">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newRoutineLabel<%= sensor.device.replace(/[.]/g,'') %>">Nueva rutina</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-auto">
+                                Hora de inicio
+                                <input type="text" list="startHour" name="start" placeholder="HH:MM" title="Introduce la hora de inicio (HH:MM)" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" maxlength="5" minlength="5" required>                                
+                                <datalist id="startHour">
+                                    <option label="Hora más barata de hoy"><%= precios[precios.length-1].min.hour.split('-')[0] %>:00 %></option>     
+                                </datalist>
+                            </div>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="row">
+                            <div class="col-auto">
+                                Hora de fin                                  
+                                <input type="text" list="endHour" name="end" placeholder="HH:MM" title="Introduce la hora de fin (HH:MM)" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" maxlength="5" minlength="5" required> 
+                                <datalist id="endHour">
+                                    <option label="Hora más barata de hoy"><%= precios[precios.length-1].min.hour.split('-')[1] %>:00 %> </option>     
+                                </datalist>
+                            </div>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="row">
+                            <div class="col-auto">
+                                Días de la semana(opcional)                                  
+                                <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Selecciona los días</button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                    <input class="form-check-input" type="checkbox" name="days[]" value="1" id="lunes">
+                                    <label class="form-check-label" for="lunes">Lunes</label>  
+                                    </li>
+                                    <li>
+                                    <input class="form-check-input" type="checkbox" name="days[]" value="2" id="martes">
+                                    <label class="form-check-label" for="martes">Martes</label>  
+                                    </li>
+                                    <li>
+                                    <input class="form-check-input" type="checkbox" name="days[]" value="3" id="miercoles">
+                                    <label class="form-check-label" for="miercoles">Miércoles</label>  
+                                    </li>
+                                    <li>
+                                    <input class="form-check-input" type="checkbox" name="days[]" value="4" id="jueves">
+                                    <label class="form-check-label" for="jueves">Jueves</label>  
+                                    </li>
+                                    <li>
+                                    <input class="form-check-input" type="checkbox" name="days[]" value="5" id="viernes">
+                                    <label class="form-check-label" for="viernes">Viernes</label>  
+                                    </li>
+                                    <li>
+                                    <input class="form-check-input" type="checkbox" name="days[]" value="6" id="sabado">
+                                    <label class="form-check-label" for="sabado">Sábado</label>  
+                                    </li>
+                                    <li>
+                                    <input class="form-check-input" type="checkbox" name="days[]" value="0" id="domingo">
+                                    <label class="form-check-label" for="domingo">Domingo</label>  
+                                    </li> 
+                                </ul>
+                            </div>
+                        </div>     
+                
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Añadir rutina</button>
+                    </div>
+
+                    <input type="hidden" name="device" value="<%= sensor.device %>" /> 
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

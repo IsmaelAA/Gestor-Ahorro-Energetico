@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <%- include('../partials/head'); %>
+        <title>Configuración</title>
+</head>
+
+<body class="container">
+
+    <header>
+        <%- include('../partials/header', {active:'configuracion'}); %>
+    </header>
+
+    <main>
+
+        <div class="dropdown-divider"></div>
+
+        <div class="card">
+            <form class="form-inline" action="/configuracion/setPotenciaContratada" method="post">
+                <div class="row">
+                    <div class="col-auto align-self-center ">
+                        <label class="form-label" for="homeWattage"><b>Potencia Contratada (kW):</b></label>
+                    </div>
+                    <div class="col-auto px-0 align-self-center">
+                        <input type="number" step="0.05" name="homeWattage" placeholder="Ejemplo: 3.5 kW/h" class="form-control" min="0" value="<%= potenciaContratada.homeWattage %>" required>
+                    </div>
+                    <div class="col-auto px-0 align-self-center">
+                        <button class="btn btn-primary" type="submit">Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="dropdown-divider"></div>
+
+        <% sensores.forEach(function(sensor){ %>
+            <div class="card">
+
+                <div class="card-header">
+                    <h4>
+                        <%= sensor.tag %> - <%= sensor.device %>
+                    </h4>
+                </div>
+
+                <div class="card-body">
+                    
+                        <form class="form-inline" action="/sensores/setTag" method="post">
+                            <div class="row">
+                                <div class="col-auto align-self-center ">
+                                    <label class="form-label" for="tag">Etiqueta identificativa: </label>
+                                </div>
+                                <div class="col-auto px-0 align-self-center">
+                                    <input type="text" name="tag" value="<%= sensor.tag %>" placeholder="Introduce un nombre" maxlength="20" class="form-control" minlength="1" required>
+                                    <input type="hidden" name="device" value="<%= sensor.device %>" />
+                                </div>
+                                <div class="col-auto px-0 align-self-center">
+                                    <button class="btn btn-primary" type="submit">Cambiar</button>
+                                </div>
+                            </div>
+                        </form>
+                    
+                        <div class="dropdown-divider"></div>
+                   
+                        <form class="form-inline" action="/sensores/setPotencia" method="post">
+                            <div class="row">
+                                <div class="col-auto align-self-center ">
+                                    <label class="form-label" for="wattage">Potencia del dispositivo (W): </label>
+                                </div>
+                                <div class="col-auto px-0 align-self-center">
+                                    <input type="number" name="wattage" placeholder="Ejemplo: 250 W" class="form-control" min="0" value="<%= sensor.wattage %>" required>
+                                    <input type="hidden" name="device" value="<%= sensor.device %>" />
+                                </div>
+                                <div class="col-auto px-0 align-self-center">
+                                    <button class="btn btn-primary" type="submit">Guardar</button>
+                                </div>
+                            </div>
+                        </form>
+
+                </div>
+
+                <div class="card-footer">
+                    <%- include('../partials/buttons/viewAllReadingsButton', {sensor: sensor}); %>
+                    <%- include('../partials/buttons/turnOnDeviceButton', {sensor:sensor}); %>
+                    <%- include('../partials/buttons/resetDeviceReadingsButton', {sensor:sensor}); %>
+                    <%- include('../partials/buttons/turnOnRoutinesButton', {sensor:sensor}); %>
+                    <%- include('../partials/buttons/resetDeviceRoutinesButton', {sensor:sensor}); %>
+                </div>
+            </div>
+
+            <div class="dropdown-divider"></div>
+            <% }); %>
+
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+
+</body>
+
+</html>

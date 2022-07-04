@@ -1,0 +1,55 @@
+<div class="card">
+    <div class="card-header">
+        <h2> Consumo de los dispositivos <b>Hoy</b></h2>
+    </div>
+    <div class="card-body">
+        <div class="chart-container" style="width:100%;max-width:600px">
+            <canvas id="dayConsumption"></canvas>
+        </div>
+    </div>
+</div>
+<script>
+    <%
+        let fullDate = new Date().toLocaleString()
+        let date = fullDate.split(' ')[0]
+        let dayConsumptions = [];
+        let dayTags = [];
+
+        sensores.forEach(function (sensor) {
+            if(sensor.readings.length > 0){ 
+                if(sensor.readings.find(dayRead => dayRead.date == date) != undefined){
+                    dayConsumptions.push(sensor.readings.find(dayRead => dayRead.date == date).dayConsumption);
+                    dayTags.push(sensor.tag);
+                }
+            }
+        });                   
+    %>
+
+    var dayConfig = {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data:  [<%- dayConsumptions %>],
+                backgroundColor: [  
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)'
+                ],
+                label: 'Consumo de los dispositivos el día de hoy'
+            }],
+            labels: <%- JSON.stringify(dayTags) %>
+        },
+        options: {
+            responsive: true,
+            legend: {
+                display: true,
+                position: "right",
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            }
+        }
+    };
+
+</script>

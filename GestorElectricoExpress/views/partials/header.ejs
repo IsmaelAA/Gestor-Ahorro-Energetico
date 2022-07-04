@@ -1,0 +1,42 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">
+    <img src="/img/logo.png" alt="logo" style="height: 48px" />
+    Gestor Eléctrico
+  </a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarGestor">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarGestor">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <% if(active=="sensores" ){ %>
+          <a class="nav-link active" href="/">Sensores</a>
+        <% } else { %>
+          <a class="nav-link" href="/">Sensores</a>
+        <% } %>
+      </li>
+      <li class="nav-item">
+        <% if(active=="rutinas" ){ %>
+          <a class="nav-link active" href="/rutinas">Rutinas</a>
+        <% } else { %>
+          <a class="nav-link" href="/rutinas">Rutinas</a>
+        <% } %>
+      </li>
+      <li class="nav-item">
+        <% if(active=="informes" ){ %>
+          <a class="nav-link active" href="/informes">Informes</a>
+        <% } else { %>
+          <a class="nav-link" href="/informes">Informes</a>
+        <% } %>
+      </li>
+      <li class="nav-item">
+        <% if(active=="configuracion" ){ %>
+          <a class="nav-link active" href="/configuracion">Configuración</a>
+        <% } else { %>
+          <a class="nav-link" href="/configuracion">Configuración</a>
+        <% } %>
+      </li>
+    </ul>
+  </div>
+</nav>

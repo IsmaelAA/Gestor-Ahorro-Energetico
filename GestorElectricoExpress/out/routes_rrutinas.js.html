@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: routes/rrutinas.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: routes/rrutinas.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Rutas de /rutinas
+ * @param {*} app 
+ * @param {*} gestorSensores 
+ * @param {*} gestorPrecios 
+ * @param {*} gestorRutinas 
+ */
+module.exports = function (app, gestorSensores, gestorPrecios, gestorRutinas) {
+
+    /**
+     * Pagina rutinas
+     */
+    app.get('/rutinas', (req, res) => {
+        try {
+            sensors_readings = gestorSensores.getSensores();
+            precios_hora = gestorPrecios.getPrecios();
+            res.render('pages/routines', { sensores: sensors_readings, precios: precios_hora })
+        } catch (err) {
+            res.status(400).render('pages/error', { error: err });
+        }
+    });
+
+    /**
+     * Borrar todas las rutinas, borrando todas las entradas en el json.
+     */
+    app.get("/rutinas/reiniciar", function (req, res) {
+        console.log("Petición de Reiniciar todas las rutinas")
+
+        try {
+            gestorRutinas.reiniciarRutinas();
+            res.redirect(req.get('referer'));
+        } catch (err) {
+            res.status(400).render('pages/error', { error: err });
+        }
+    });
+
+    /**
+     * Nueva rutina para el dispositivo pasado como parametro.
+     */
+    app.post("/rutinas/nueva", function (req, res) {
+        const { device, start, end, days } = req.body;
+        console.log("Peticion de nueva rutina para " + device)
+
+        if (!device || !start || !end) {
+            res.status(400).render('pages/error', { error: "Entries must have a start and end" });
+            return;
+        }
+
+        try {
+            gestorRutinas.nuevaRutina(device, start, end, days);
+            res.redirect(req.get('referer'));
+        } catch (err) {
+            res.status(400).render('pages/error', { error: err });
+        }
+    });
+
+
+    /**
+     * Nueva rutina optimizada para el dispositivo en funcion de las horas pasadas como parametro.
+     */
+    app.post("/rutinas/optimizar", function (req, res) {
+        const { device, hoursActivated } = req.body;
+        console.log("Peticion de rutina optimizada para " + device + " con numero de horas: " + hoursActivated)
+
+        if (!hoursActivated || !device) {
+            res.status(400).render('pages/error', { error: "Entries must have a device and number of hours" });
+            return;
+        }
+
+        try {
+            gestorRutinas.nuevaRutinaOptimizada(device, hoursActivated);
+            res.redirect(req.get('referer'));
+        } catch (err) {
+            res.status(400).render('pages/error', { error: err });
+        }
+    });
+
+
+    /**
+     * Inicia las rutinas de un dispositivo pasado por parametro en la URL.
+     */
+    app.get("/rutinas/iniciar/:device", function (req, res) {
+        const device = req.params.device;
+        console.log("Peticion de iniciar rutinas para " + device)
+
+        if (!device) {
+            res.status(400).render('pages/error', { error: "Entries must have a device" });
+            return;
+        }
+
+        try {
+            gestorRutinas.iniciarRutinas(device);
+            res.redirect(req.get('referer'));
+        } catch (err) {
+            res.status(400).render('pages/error', { error: err });
+        }
+    });
+
+    /**
+     * Detiene las rutinas de un dispositivo.
+     */
+    app.get("/rutinas/detener/:device", function (req, res) {
+        const device = req.params.device;
+        console.log("Peticion de detener rutinas para " + device)
+
+        if (!device) {
+            res.status(400).render('pages/error', { error: "Entries must have a device" });
+            return;
+        }
+        
+        try {
+            gestorRutinas.detenerRutinas(device);
+            res.redirect(req.get('referer'));
+        } catch (err) {
+            res.status(400).render('pages/error', { error: err });
+        }
+    });
+
+    /**
+     * Elimina las rutinas de un dispositivo.
+     */
+    app.get("/rutinas/restablecer/:device", function (req, res) {
+        const device = req.params.device;
+        console.log("Peticion de eliminar rutinas para " + device)
+
+        if (!device) {
+            res.status(400).render('pages/error', { error: "Device not defined" });
+            return;
+        }
+
+        try {
+            gestorRutinas.eliminarRutinasDispositivo(device);
+            res.redirect(req.get('referer'));
+        } catch (err) {
+            res.status(400).render('pages/error', { error: err });
+        }
+    })
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="GestorConfiguracion.html">GestorConfiguracion</a></li><li><a href="GestorPrecios.html">GestorPrecios</a></li><li><a href="GestorRutinas.html">GestorRutinas</a></li><li><a href="GestorSensores.html">GestorSensores</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Tue Jun 28 2022 13:07:07 GMT+0200 (hora de verano de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

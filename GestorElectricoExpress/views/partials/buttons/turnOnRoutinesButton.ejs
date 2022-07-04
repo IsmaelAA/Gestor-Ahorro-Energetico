@@ -1,0 +1,5 @@
+<% if(!sensor.runRoutines) { %>
+    <a type="button" class="btn btn-success" href="/rutinas/iniciar/<%= sensor.device %>">Iniciar rutinas</a>
+<% } else { %>
+     <a type="button" class="btn btn-danger" href="/rutinas/detener/<%= sensor.device %>">Detener rutinas</a>
+<% } %>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <%- include('../partials/head'); %>
+    <title>Sensores</title>
+</head>
+
+<body class="container">
+
+    <header>
+       
+        <%- include('../partials/header', {active:'sensores'}) %>
+    </header>
+
+    <main>
+
+        <%- include('../partials/precios'); %>
+        
+        <div class="accordion" id="accordionPanel">
+            <% sensores.forEach(function(sensor){ %>
+                <div class="accordion-item">
+                    
+                    <%- include('../partials/accordionheader', {sensor: sensor}); %>
+                    
+                    <div id="i<%= sensor.device.replace(/[.]/g,'') %>" class="accordion-collapse collapse show"
+                        aria-labelledby="panelsStayOpen-headingOne<%= sensor.device.replace(/[.]/g,'') %>">
+                        <div class="accordion-body">
+                            <div class="card">
+
+                                <div class="card-header">
+                                    <div id="button<%= sensor.device.replace(/[.]/g,'') %>">
+                                        <%- include('../partials/buttons/turnOnDeviceButton', {sensor: sensor}); %>
+                                    </div>
+                                </div>
+
+                                <div class="card-body">
+                                    <h4>Últimas lecturas</h4>
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="col-md-2">Día</th>
+                                                <th>Consumo</th>
+                                                <th>Hora</th>
+                                            </tr>
+                                        </thead>
+                                        <% if(sensor['readings'].length > 0 ){ %>
+                                        <tbody>
+                                            <% for(var i = sensor['readings'].length - 1 ;i > sensor['readings'].length - 8 && i >= 0 ;i--){ %>
+                                                <tr>
+                                                    <td>
+                                                        <%= sensor['readings'][i].date %>
+                                                    </td>
+                                                </tr>
+                                                <% for(var j = sensor['readings'][i].values.length - 1 ;j > sensor['readings'][i].values.length - 7 && j >= 0 ;j--){
+                                                    %>
+                                                    <tr>
+                                                        <td class="col-md-2"></td>
+                                                        <td>
+                                                            <%= sensor['readings'][i].values[j].value %> W
+                                                        </td>
+
+                                                        <td>
+                                                            <%= sensor['readings'][i].values[j].hour %>
+                                                        </td>
+                                                    </tr>
+                                                    <% }} %>
+                                        </tbody>
+                                        <% } %>
+                                    </table>
+                                </div>
+
+                                <div class="card-footer">
+                                    <%- include('../partials/buttons/viewAllReadingsButton', {sensor: sensor}); %>
+                                    <%- include('../partials/buttons/resetDeviceReadingsButton', {sensor: sensor}); %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Refrescar tabla cada 10 segundos -->
+                <script type="text/javascript" language="javascript">
+                    $(document).ready(function () {
+                        setInterval(function () {
+                            $('#i<%= sensor.device.replace(/[.]/g,'') %>').load(location.href + ' #i<%= sensor.device.replace(/[.]/g,'') %> >*', ''); //Actualizar datos de los sensores
+                            $('#button<%= sensor.device.replace(/[.]/g,'') %>').load(location.href + ' #button<%= sensor.device.replace(/[.]/g,'') %> >*', ''); //Actualizar estado del botón
+                            $('#dayConsumption<%= sensor.device.replace(/[.]/g,'') %>').load(location.href + ' #dayConsumption<%= sensor.device.replace(/[.]/g,'') %> >*', ''); //Actualizar consumo total del día
+                        }, 10000);
+                    });
+                </script>
+                <% }); %>
+        </div>
+
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+
+</body>
+
+</html>

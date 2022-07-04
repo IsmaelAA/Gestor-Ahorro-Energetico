@@ -1,0 +1,5 @@
+<% if (sensor.state) { %>
+    <a type="button" class="btn btn-danger" href="/sensores/apagar/<%= sensor.device %>">Apagar</a>
+<% } else { %>
+    <a type="button" class="btn btn-success" href="/sensores/encender/<%= sensor.device %>">Encender</a>
+<% } %>

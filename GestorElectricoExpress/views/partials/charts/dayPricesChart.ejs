@@ -1,0 +1,44 @@
+<div class="card">
+    <div class="card-header">
+        <h2> Precios del kW/h <b>Hoy</b></h2>
+    </div>
+    <div class="card-body">
+        <div class="chart-container" style="width:100%">
+            <canvas id="dayPrices"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    <%
+        let fullDate = new Date().toLocaleString()
+        let date = fullDate.split(' ')[0]
+        let precioDia = precios.find(precio => precio.date == date).precios;
+        var preciosDia = [];
+        var franjasHorarias = [];
+
+        Object.keys(precioDia).forEach(function (franja) {
+            preciosDia.push((precioDia[franja].price / 1000).toFixed(4))
+            franjasHorarias.push(franja)
+        });
+    %>
+
+    var data = {
+        labels: <%- JSON.stringify(franjasHorarias) %>,
+        datasets: [
+            {
+                label: 'Precio',
+                data: [<%- preciosDia %>],
+                fill: true,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.15
+            }
+        ]
+    };
+
+    var priceConfig = {
+        type: 'line',
+        data: data,
+    };
+
+</script>

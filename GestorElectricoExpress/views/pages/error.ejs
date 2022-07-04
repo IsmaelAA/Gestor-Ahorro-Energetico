@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <%- include('../partials/head'); %>
+        <title>Error</title>
+</head>
+
+<body class="container">
+    <header>
+        <%- include('../partials/header', {active:'sensores'}); %>
+    </header>
+
+    <main>
+        <div class="card">
+            <div class="card-header">
+                <h1>Error</h1>
+            </div>
+
+            <div class="card-body">
+
+                <b>
+                    <%= error %>
+                </b>
+
+            </div>
+
+            <div class="card-footer">
+                <input type="button" class="btn btn-primary" value="Volver" onclick="history.back()">
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+</body>
+
+</html>
